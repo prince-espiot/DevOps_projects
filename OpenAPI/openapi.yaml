@@ -1,0 +1,86 @@
+openapi: '3.0.2'
+info:
+  title: API Title
+  version: '1.0'
+  description: Some tutuorial
+  contact:
+    name: tutuorialstuff
+    url: http//tutorialstuff.com
+servers:
+  - url: http//devapi.com
+  
+
+paths:
+  /student:
+    description: student resourses
+    get:
+      description: operation to fetch student.
+      parameters:
+        - in: query
+          name: studentname
+          required: true
+          schema:
+            type: string
+            example: Prince
+      responses:
+        200:
+          description: Success responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/students'
+    post: 
+      description: Add student data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/student'
+      responses:
+        201:
+          description: Record added!
+  /student{id}:
+    get:
+      description: 'Get studen by ID'
+      parameters:
+        - in: path
+          name: ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/student"
+components:
+  schemas:
+    student: 
+      type: object
+      properties:
+        StudentID:
+          type: integer
+          example: 3
+        StudentName:
+          type: string
+          example: Okumo
+        StudentType:
+          type: string
+          example: First class student
+    students:
+      type: array
+      items:
+        properties:
+          StudentID:
+            type: integer
+            example: 3
+          StudentName:
+            type: string
+            example: Okumo
+          StudentType:
+            type: string
+            example: First class student
+         
+

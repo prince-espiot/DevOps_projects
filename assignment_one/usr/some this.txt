@@ -1,0 +1,16 @@
+ADD . /usr/app/
+COPY /usr/app/fibonacci.sh /usr/app/helloDocker.sh ./
+RUN chmod +x /usr/app/fibonacci.sh && chmod +x /usr/app/helloDocker.sh
+#RUN ./usr/app/fibonacci.sh && ./usr/app/helloDocker.sh
+ENTRYPOINT [ "/usr/app/fibonacci.sh"]
+CMD ["4"]
+
+
+
+# syntax=docker/dockerfile:1
+FROM alpine:3.12
+ADD . /usr/app/
+ENV VAR "10"
+ENV MSG "Hello Docker!"
+RUN chmod +x fibonacci.sh && chmod +x helloDocker.sh
+RUN ./fibonacci.sh && ./helloDocker.sh

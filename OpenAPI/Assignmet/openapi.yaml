@@ -1,0 +1,249 @@
+openapi: '3.0.0'
+info:
+  title: Photo management API
+  version: '1.0'
+servers:
+  - url: https://petstore3.swagger.io/api/v3
+
+paths:
+  /photos:
+    get:
+      tags:
+        - "get"
+      description: 'Gets the photo'
+      parameters: 
+        - in: query
+          name: access
+          required: true
+          schema: 
+            type: string
+            enum:
+              - public
+              - private
+        
+      responses:
+        '200':
+          description: Success responses
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Photos'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                  message: 'err'
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /photo:
+    post:
+      tags:
+        - "post"
+      description: 'Post data in json format'
+      requestBody:
+        description: 'Create a new photo with the neccessary data'
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Photo'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Success'
+              example:
+                  message: 'Photo successfully created'
+                  id: id
+        '422':
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                  message: 'err'
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /photo/{photo_id}:
+    get:
+      tags:
+        - "get"
+      description: 'Get photo by ID'
+      operationId: findPhotobyId
+      parameters: 
+        - name: photo_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Photo'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                  message: 'err'
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - "put"
+      description: 'Update the photo'
+      operationId: updatePhotobyId
+      parameters: 
+        - name: photo_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Success'
+              example:
+                  message: 'Photo successfully updated'
+                  id: id
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                  message: 'err'
+        '422':
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                  message: 'err'
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - "delete"
+      description: 'Delete by ID'
+      operationId: deletePhotobyId
+      parameters: 
+        - name: photo_id
+          in: path
+          required: true
+          schema:
+            type: string
+      
+      responses:
+        '204':
+          description: No Content
+
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                  message: 'err'
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+components:
+  schemas:
+    Photo:
+      type: object
+      required:
+        - "name"
+        - 'access'
+        - 'location'
+        - 'file'
+        - 'modified_date'
+        - 'created_date'
+      properties:
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 20
+          example: Photo1
+        description:
+          type: string
+          maxLength: 100
+        access:
+          type: string
+          enum:
+            - public
+            - private
+        location:
+          type: string
+        file:
+          type: string
+        created_date:
+          type: string
+          format: date-time
+        modified_date:
+          type: string
+          format: date-time
+        
+    Photos:
+     type: array
+     items:
+      $ref: '#/components/schemas/Photo'
+          
+    Success:
+      type: object
+      properties:
+        message: 
+          type: string
+        id:
+          type: string
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+
+
+
+        

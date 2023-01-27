@@ -1,0 +1,6 @@
+tinytag
+numpy
+scipy
+matplotlib
+pandas
+
